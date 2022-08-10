@@ -1,6 +1,7 @@
 package test;
 
 import datos.Conexion;
+import datos.PersonaDAO;
 import datos.PersonaDAOjdbc;
 import domain.PersonaDTO;
 
@@ -15,8 +16,8 @@ public class TestManejoPersonas {
             if (conexion.getAutoCommit()) {
                 conexion.setAutoCommit(false);
             }
-            PersonaDAOjdbc Personajdbc = new PersonaDAOjdbc(conexion);
-            List<PersonaDTO> personas = Personajdbc.select();
+            PersonaDAO personaDAO = new PersonaDAOjdbc(conexion);
+            List<PersonaDTO> personas = personaDAO.select();
 
             for(PersonaDTO persona: personas){
                 System.out.println("persona = " + persona);

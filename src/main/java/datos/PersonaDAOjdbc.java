@@ -35,7 +35,7 @@ public class PersonaDAOjdbc implements PersonaDAO {
         List<PersonaDTO> personas = new ArrayList<PersonaDTO>();
 
         try {
-            conn =this.conexionTransaccional!=null? this.conexionTransaccional: getConnection();
+            conn =this.conexionTransaccional!=null? this.conexionTransaccional: Conexion.getConnection();
             stmt =conn.prepareStatement(SQL_SELECT);
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -56,18 +56,13 @@ public class PersonaDAOjdbc implements PersonaDAO {
             }
         }
         finally {
-            try {
                 close(rs);
                 close(stmt);
                 if (this.conexionTransaccional==null){
                     Conexion.close(conn);
                 }
-
-            } catch (SQLException e) {
-                e.printStackTrace(System.out);
             }
 
-        }
         return personas;
 
 
@@ -78,13 +73,17 @@ public class PersonaDAOjdbc implements PersonaDAO {
         PreparedStatement stmt=null;
         int registros=0;
         try {
-            conn =this.conexionTransaccional!=null? this.conexionTransaccional: getConnection();
+            conn =this.conexionTransaccional!=null? this.conexionTransaccional: Conexion.getConnection();
             stmt=conn.prepareStatement(SQL_INSERT);
             stmt.setString(1, persona.getNombre());
             stmt.setString(2, persona.getApellido());
             stmt.setString(3, persona.getEmail());
             stmt.setString(4, persona.getTelefono());
+
+            System.out.println("ejecutando query:" + SQL_INSERT);
             registros= stmt.executeUpdate();
+            System.out.println("registros afectados = " + registros);
+
         }
         finally {
                 close(stmt);
@@ -101,7 +100,8 @@ public class PersonaDAOjdbc implements PersonaDAO {
         PreparedStatement stmt=null;
         int registros=0;
         try {
-            conn =this.conexionTransaccional!=null? this.conexionTransaccional: getConnection();
+            conn =this.conexionTransaccional!=null? this.conexionTransaccional: Conexion.getConnection();
+            System.out.println("ejecutando query:" + SQL_UPDATE);
             stmt=conn.prepareStatement(SQL_UPDATE);
             stmt.setString(1, persona.getNombre());
             stmt.setString(2, persona.getApellido());
@@ -109,6 +109,7 @@ public class PersonaDAOjdbc implements PersonaDAO {
             stmt.setString(4, persona.getTelefono());
             stmt.setInt(5, persona.getIdPersona());
             registros= stmt.executeUpdate();
+            System.out.println("registros actualizados = " + registros);
         }
         finally {
                 close(stmt);
@@ -125,13 +126,14 @@ public class PersonaDAOjdbc implements PersonaDAO {
         PreparedStatement stmt=null;
         int registros=0;
         try {
-            conn =this.conexionTransaccional!=null? this.conexionTransaccional: getConnection();
+            conn =this.conexionTransaccional!=null? this.conexionTransaccional: Conexion.getConnection();
+            System.out.println("ejecutando query:" + SQL_DELETE);
             stmt=conn.prepareStatement(SQL_DELETE);
             stmt.setInt(1, persona.getIdPersona());
             registros= stmt.executeUpdate();
         }
         finally {
-                close(stmt);
+                Conexion.close(stmt);
                 if (this.conexionTransaccional==null){
                     Conexion.close(conn);
                 }

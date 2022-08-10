@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface PersonaDAO {
 
-    public List<PersonaDTO> select()throws SQLException;
+    public List<PersonaDTO> select() throws SQLException;
 
-    public int insert(PersonaDTO persona)throws SQLException;
-    public int update(PersonaDTO persona)throws SQLException;
-    public int delete(PersonaDTO persona)throws SQLException;
+    public int insert(PersonaDTO persona) throws SQLException;
+    public int update(PersonaDTO persona) throws SQLException;
+    public int delete(PersonaDTO persona) throws SQLException;
 }
