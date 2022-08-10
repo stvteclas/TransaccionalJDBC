@@ -1,11 +1,10 @@
 package test;
 
 import datos.Conexion;
-import datos.usuarioDAO;
-import datos.usuarioDAO;
+import datos.UsuarioDao;
+import datos.usuarioDAOjdbc;
 
-import domain.Usuario;
-import domain.Usuario;
+import domain.UsuarioDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,17 +18,11 @@ public class TestManejoUsuarios {
                 if (conexion.getAutoCommit()) {
                     conexion.setAutoCommit(false);
                 }
-                usuarioDAO usuarioDAO = new usuarioDAO(conexion);
-                Usuario cambioUsuario= new Usuario();
-                cambioUsuario.setIdUsuario(4);
-                cambioUsuario.setUsuario("Ricardo");
-                cambioUsuario.setPassword("Murphy");
-                usuarioDAO.actualizar(cambioUsuario);
-
-                Usuario nuevoUsuario= new Usuario();
-               nuevoUsuario.setUsuario("Romina");
-               nuevoUsuario.setPassword("tokio22");
-                usuarioDAO.insertar(nuevoUsuario);
+                UsuarioDao usuarioDao= new usuarioDAOjdbc(conexion);
+                List<UsuarioDTO> usuarios= usuarioDao.select();
+                for (UsuarioDTO usuario: usuarios){
+                    System.out.println("usuario = " + usuario);
+                }
 
                 conexion.commit();
                 System.out.println("se ha hecho commit de la transaccion");
